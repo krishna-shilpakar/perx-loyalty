@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  factory :users_reward do
+  factory :user_reward do
     user
     reward
     claimed { false }

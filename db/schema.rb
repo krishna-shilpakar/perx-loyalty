@@ -18,10 +18,10 @@ ActiveRecord::Schema.define(version: 2019_08_26_164533) do
 
   create_table "points", force: :cascade do |t|
     t.integer "num", default: 0
-    t.bigint "users_reward_id", null: false
+    t.bigint "user_reward_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["users_reward_id"], name: "index_points_on_users_reward_id"
+    t.index ["user_reward_id"], name: "index_points_on_user_reward_id"
   end
 
   create_table "rewards", force: :cascade do |t|
@@ -33,8 +33,21 @@ ActiveRecord::Schema.define(version: 2019_08_26_164533) do
   create_table "transactions", force: :cascade do |t|
     t.money "amount", scale: 2, default: "0.0"
     t.string "country"
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_transactions_on_user_id"
+  end
+
+  create_table "user_rewards", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "reward_id", null: false
+    t.boolean "claimed", default: false
+    t.text "comments"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reward_id"], name: "index_user_rewards_on_reward_id"
+    t.index ["user_id"], name: "index_user_rewards_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -44,18 +57,8 @@ ActiveRecord::Schema.define(version: 2019_08_26_164533) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "users_rewards", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "reward_id", null: false
-    t.boolean "claimed", default: false
-    t.text "comments"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["reward_id"], name: "index_users_rewards_on_reward_id"
-    t.index ["user_id"], name: "index_users_rewards_on_user_id"
-  end
-
-  add_foreign_key "points", "users_rewards"
-  add_foreign_key "users_rewards", "rewards"
-  add_foreign_key "users_rewards", "users"
+  add_foreign_key "points", "user_rewards"
+  add_foreign_key "transactions", "users"
+  add_foreign_key "user_rewards", "rewards"
+  add_foreign_key "user_rewards", "users"
 end

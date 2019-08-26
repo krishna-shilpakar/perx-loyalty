@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 class Reward < ApplicationRecord
-  has_many :users_rewards
-  has_many :users, through: :users_rewards
-  has_many :points
 
   validates :name, presence: true
+  has_many :user_rewards, dependent: :destroy
+  has_many :users, through: :user_rewards
 end
