@@ -2,6 +2,10 @@
 
 FactoryBot.define do
   factory :reward do
-    name { 'MyString' }
+    name { 'Standard Transaction' }
+
+    trait :standard do
+      name { 'Standard Transaction' }
+    end
   end
 end
