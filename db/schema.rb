@@ -18,13 +18,21 @@ ActiveRecord::Schema.define(version: 2019_08_26_164533) do
 
   create_table "points", force: :cascade do |t|
     t.integer "num", default: 0
-    t.bigint "user_reward_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "user_reward_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_points_on_user_id"
     t.index ["user_reward_id"], name: "index_points_on_user_reward_id"
   end
 
   create_table "rewards", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tiers", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -43,6 +51,7 @@ ActiveRecord::Schema.define(version: 2019_08_26_164533) do
     t.bigint "user_id", null: false
     t.bigint "reward_id", null: false
     t.boolean "claimed", default: false
+    t.jsonb "meta", default: "{}", null: false
     t.text "comments"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -53,13 +62,17 @@ ActiveRecord::Schema.define(version: 2019_08_26_164533) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "country"
+    t.date "date_of_birth"
     t.integer "loyalty_points", default: 0
+    t.bigint "tier_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["tier_id"], name: "index_users_on_tier_id"
   end
 
-  add_foreign_key "points", "user_rewards"
+  add_foreign_key "points", "users"
   add_foreign_key "transactions", "users"
   add_foreign_key "user_rewards", "rewards"
   add_foreign_key "user_rewards", "users"
+  add_foreign_key "users", "tiers"
 end

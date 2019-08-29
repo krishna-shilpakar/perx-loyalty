@@ -9,9 +9,10 @@ class Transaction < ApplicationRecord
   private
 
   def transaction_reward
-    Rewards::Transaction.generate!(
+    Services::Transaction.execute(
       user: user,
       amount: amount,
+      transaction_id: id,
       foreign: user.country != country
     )
   end

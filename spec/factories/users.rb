@@ -5,5 +5,10 @@ FactoryBot.define do
     name { Faker::Name.name }
     country { nil }
     loyalty_points { 0 }
+    tier { Tier.default }
+
+    trait :gold do
+      after(:create) { |user| user.update(tier: Tier.gold) }
+    end
   end
 end

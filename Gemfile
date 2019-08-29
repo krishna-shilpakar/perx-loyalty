@@ -23,7 +23,6 @@ gem 'puma', '~> 3.11'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
-
 gem 'rack-cors'
 
 group :development, :test do
@@ -41,7 +40,9 @@ group :development do
 end
 
 group :test do
+  gem 'database_cleaner'
   gem 'shoulda-matchers'
+  gem 'timecop'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

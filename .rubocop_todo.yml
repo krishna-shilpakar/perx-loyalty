@@ -16,6 +16,7 @@ Metrics/LineLength:
     - config/initializers/backtrace_silencers.rb
     - config/initializers/cors.rb
     - config/initializers/wrap_parameters.rb
+    - spec/**/*
 
 Metrics/BlockLength:
   Exclude:

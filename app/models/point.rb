@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class Point < ApplicationRecord
-  belongs_to :user_reward
+  include RangeScopes
+
+  belongs_to :user
+  belongs_to :user_reward, optional: true
 
   validates :num, presence: true
 end
