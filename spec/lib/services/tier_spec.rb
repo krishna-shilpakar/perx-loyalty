@@ -10,14 +10,14 @@ RSpec.describe Services::Tier do
   describe '#generatable?' do
     context 'generatable' do
       it 'is true' do
-        expect(subject.new(user).generatable?).to be_truthy
+        expect(subject.new(user.reload).generatable?).to be_truthy
       end
     end
 
     context 'non generatable' do
       let!(:user) { create(:user) }
       it 'is false' do
-        expect(subject.new(user).generatable?).to be_falsey
+        expect(subject.new(user.reload).generatable?).to be_falsey
       end
     end
   end
@@ -27,7 +27,7 @@ RSpec.describe Services::Tier do
     let(:meta_keys) { %w[source tier_name].sort }
 
     it 'generate reward' do
-      expect(described_class.execute(user)).to be_truthy
+      expect(described_class.execute(user.reload)).to be_truthy
       expect(user_reward.user).to eql(user)
       expect(user_reward.claimed).to be_falsey
       expect(user_reward.reward).to eql(reward)

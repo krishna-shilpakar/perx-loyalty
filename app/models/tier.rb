@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
 class Tier < ApplicationRecord
-  NAMES = %w[Standard Gold Platinum].freeze
+  NAMES = [
+    { name: 'Standard', points: (0..999) },
+    { name: 'Gold', points: (1000..4999) },
+    { name: 'Platinum', points: (5000..Float::INFINITY) }
+  ].freeze
+  validates :name, presence: true, inclusion: { in: NAMES.map { |t| t[:name] } }
 
-  validates :name, presence: true, inclusion: { in: NAMES }
-
-  scope :default, -> { find_by(name: 'Standard') }
+  scope :standard, -> { find_by(name: 'Standard') }
   scope :gold, -> { find_by(name: 'Gold') }
-  scope :Platinum, -> { find_by(name: 'Platinum') }
+  scope :platinum, -> { find_by(name: 'Platinum') }
+  scope :default, -> { standard }
 
   def default?
     name == 'Standard'
@@ -19,5 +23,9 @@ class Tier < ApplicationRecord
 
   def platinum?
     name == 'Platinum'
+  end
+
+  def self.by_points(point)
+    send(Tier::NAMES.find { |t| t[:points].include?(point) }[:name].downcase)
   end
 end
