@@ -8,7 +8,7 @@ FactoryBot.define do
     tier { Tier.default }
 
     trait :gold do
-      after(:create) { |user| user.update(tier: Tier.gold) }
+      before(:create) { |user| user.tier = Tier.gold }
     end
   end
 end

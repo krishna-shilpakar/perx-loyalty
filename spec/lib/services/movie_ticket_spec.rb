@@ -7,7 +7,9 @@ RSpec.describe Services::MovieTicket do
   let!(:reward) { create(:reward, :ticket) }
 
   subject { described_class }
-
+  # before do
+  #   Timecop.freeze
+  # end
   describe '#generatable?' do
     context 'generatable' do
       let!(:transactions) { create_list(:transaction, 10, user: user, amount: 100.00) }

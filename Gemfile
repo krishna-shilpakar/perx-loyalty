@@ -24,6 +24,8 @@ gem 'puma', '~> 3.11'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'rack-cors'
+gem 'sidekiq'
+gem 'sidekiq-scheduler'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

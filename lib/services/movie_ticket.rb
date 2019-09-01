@@ -22,7 +22,10 @@ module Services
     end
 
     def generatable?
-      date_range = 60.days.ago..DateTime.current.end_of_day
+      first_transaction = @user.first_transaction_at
+      return false if first_transaction + 60.days < DateTime.current.end_of_day
+
+      date_range = first_transaction..DateTime.current.end_of_day
       @user.transactions.order(created_at: :desc)
            .where(created_at: date_range).sum(:amount) >= AMOUNT
     end

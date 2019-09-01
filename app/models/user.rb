@@ -8,7 +8,10 @@ class User < ApplicationRecord
   belongs_to :tier
 
   before_save :set_tier
+  before_save :reach_gold_tier, unless: -> { new_record? }
 
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/MethodLength
   def generate_reward!(reward_type, meta = {})
     case reward_type
     when 'standard'
@@ -25,19 +28,31 @@ class User < ApplicationRecord
       Rewards::Generator.new(self, meta).generate!(Reward.bonus.first)
     end
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/MethodLength
 
   def expire_points!
     update!(loyalty_points: 0)
   end
 
+  def first_transaction_at
+    transactions.order(created_at: :asc).first.created_at
+  end
+
   private
 
   def set_tier
-    if new_record?
+    if new_record? && !tier
       self.tier = Tier.default
     elsif loyalty_points_changed?
       self.tier = tier_based_on_points
     end
+  end
+
+  def reach_gold_tier
+    return unless tier_id_changed?
+
+    Services::Tier.execute(self)
   end
 
   def tier_based_on_points

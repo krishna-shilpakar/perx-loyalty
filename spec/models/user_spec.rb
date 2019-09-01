@@ -44,6 +44,7 @@ RSpec.describe User, type: :model do
 
   describe '#set_tier' do
     let!(:user) { create(:user) }
+    let!(:reward) { create(:reward, :lounge_access) }
     context '0..999' do
       before { user.update(loyalty_points: 800) }
       it 'user is on standard tier' do
@@ -52,8 +53,9 @@ RSpec.describe User, type: :model do
     end
     context '1000...4999' do
       before { user.update(loyalty_points: 1000) }
-      it 'user is on gold tier' do
+      it 'user is on gold tier and give lounge_access reward' do
         expect(user.reload.tier).to eql(Tier.gold)
+        expect(user.user_rewards.last.reward).to eql(reward)
       end
     end
     context '5000..up' do

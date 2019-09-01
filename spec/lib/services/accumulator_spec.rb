@@ -32,7 +32,7 @@ RSpec.describe Services::Accumulator do
   describe '.execute' do
     let!(:point2) { create(:point, user: user, num: 11) }
     let(:user_reward) { UserReward.last }
-    let(:meta_keys) { %w[source accumulation_points period month year].sort }
+    let(:meta_keys) { %w[source accumulation_points period date].sort }
 
     it 'generate reward' do
       expect(described_class.execute(user)).to be_truthy

@@ -15,8 +15,8 @@ module Services
       user.generate_reward!('coffee',
                             source: 'accumulator',
                             accumulation_points: POINTS,
-                            period: 'monthly', month: Time.zone.today.month,
-                            year: Time.zone.today.year)
+                            period: 'monthly',
+                            date: Time.zone.today)
     end
 
     def generatable?

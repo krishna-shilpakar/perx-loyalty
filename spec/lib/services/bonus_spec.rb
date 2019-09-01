@@ -36,7 +36,7 @@ RSpec.describe Services::Bonus do
 
   describe '.execute' do
     let(:user_reward) { UserReward.last }
-    let(:meta_keys) { %w[quater source sum_amount year].sort }
+    let(:meta_keys) { %w[source sum_amount period date].sort }
     before do
       Timecop.freeze(Time.zone.today.beginning_of_quarter)
       create_list(:transaction, 10, user: user, amount: 200.00)

@@ -16,8 +16,8 @@ module Services
 
       user.generate_reward!('bonus',
                             source: 'bonus',
-                            quater: Time.zone.today.beginning_of_quarter,
-                            year: Time.zone.today.year,
+                            period: 'quarterly',
+                            date: Time.zone.today.beginning_of_quarter,
                             sum_amount: AMOUNT)
     end
 
